@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* From Uiverse.io by SouravBandyopadhyay */
+        .card11-title {
+            color: #262626;
+            font-size: 1.5em;
+            line-height: normal;
+            font-weight: 700;
+            margin-bottom: 0.5em;
+        }
+
+        .small-desc {
+            font-size: 1em;
+            font-weight: 400;
+            line-height: 1.5em;
+            color: #452c2c;
+        }
+
+        .small-desc {
+            font-size: 1em;
+        }
+
+        .go-corner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            width: 2em;
+            height: 2em;
+            overflow: hidden;
+            top: 0;
+            right: 0;
+            background: linear-gradient(135deg, #6293c8, #384c6c);
+            border-radius: 0 4px 0 32px;
+        }
+
+        .go-arrow {
+            margin-top: -4px;
+            margin-right: -4px;
+            color: white;
+            font-family: courier, sans;
+        }
+
+        .card1 {
+            display: block;
+            position: relative;
+            max-width: 100vw;
+            max-height: 1000vh;
+            background-color: #f2f8f9;
+            border-radius: 10px;
+            padding: 2em 1.2em;
+            margin: 12px;
+            text-decoration: none;
+            z-index: 0;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #c3e6ec, #a7d1d9);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .card1:before {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            top: -16px;
+            right: -16px;
+            background: linear-gradient(135deg, #364a60, #384c6c);
+            height: 10vh;
+            width: 5vw;
+            border-radius: 40px;
+            transform: scale(1);
+            transform-origin: 50% 50%;
+            transition: transform 0.35s ease-out;
+        }
+
+        .card1:hover:before {
+            transform: scale(28);
+        }
+
+        .card1:hover .small-desc {
+            transition: all 0.5s ease-out;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .card1:hover .card1-title {
+            transition: all 0.5s ease-out;
+            color: #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card1">
+
+    </div>
+
+    <script>
+        let div = document.querySelector('.card1')
+
+
+        fetch('https://pokeapi.co/api/v2/pokemon/ditto')
+            .then(Response => Response.json())
+            .then(Element => {
+                for (key in Element) {
+                    let p = document.createElement('p')
+                    let h5 = document.createElement('h5')
+                    if (typeof Element[key] == "object") {
+                        for (firstInner in Element[key]) {
+                            if (typeof Element[key][firstInner] == "object") {
+                                for (secInner in Element[key][firstInner]) {
+                                    if (typeof Element[key][firstInner][secInner] == "object") {
+                                        for (thirdInner in Element[key][firstInner][secInner]) {
+                                            if (typeof Element[key][firstInner][secInner][thirdInner] == "object") {
+                                                for (fourInner in Element[key][firstInner][secInner][thirdInner]) {
+                                                    if (typeof Element[key][firstInner][secInner][thirdInner][fourInner] != "object") {
+                                                        console.log(`${fourInner}:${Element[key][firstInner][secInner][thirdInner][fourInner]}`)
+                                                            if(fourInner=="rarity" || fourInner=="level_learned_at"){
+                                                                p.innerHTML = `${fourInner}:${Element[key][firstInner][secInner][thirdInner][fourInner]}`
+                                                            }else{
+                                                            let a = document.createElement('a');
+
+                                                            a.href = Element[key][firstInner][secInner][thirdInner][fourInner];
+                                                            a.innerHTML = `${Element[key][firstInner][secInner][thirdInner][fourInner]}</br>`
+                                                            div.appendChild(a)
+                                                            }
+                                                    }
+                                                }
+                                            } else {
+                                                // console.log(Element[key][firstInner][secInner][thirdInner])
+                                                // document.write("versions")
+                                                h5.innerHTML = "versions";
+                                                if (thirdInner == "url") {
+                                                    let a = document.createElement('a');
+                                                    a.href = Element[key][firstInner][secInner][thirdInner];
+                                                    a.innerHTML = `${Element[key][firstInner][secInner][thirdInner]}</br>`
+                                                    div.appendChild(a)
+                                                } else
+                                                    p.innerHTML = `<b>${thirdInner}</b>:${Element[key][firstInner][secInner][thirdInner]}`
+
+                                            }
+                                        }
+
+                                    }
+                                }
+
+
+
+                            } else {
+
+                                // console.log(firstInner)
+                                if (firstInner == "legacy" || firstInner == "latest" || firstInner == "url" || firstInner == "front_shiny" || firstInner == "front_default" || firstInner == "back_default" || firstInner == "back_shiny") {
+                                    let a = document.createElement('a');
+                                    a.href = Element[key][firstInner];
+                                    a.innerHTML = `${Element[key][firstInner]}</br>`
+                                    div.appendChild(a)
+                                } else
+                                    p.innerHTML = `<b>${firstInner}</b>:${Element[key][firstInner]}`
+
+                            }
+                        }
+
+                    } else {
+                        if (key == "location_area_encounters") {
+                            let a = document.createElement('a');
+
+                            a.href = Element[key];
+                            a.innerHTML = `${Element[key]}`
+                            div.appendChild(a)
+                        } else
+                            p.innerHTML = `<b>${key}</b>:${Element[key]}`
+                    }
+                    div.appendChild(p, h5)
+
+                }
+
+            })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table,tr,th,td{
+            border: 2px solid;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+    <table id="table">
+        <tr>
+            <th colspan="4">Todos</th>
+            <th rowspan="2">Total</th>
+            <th rowspan="2">Skip</th>
+            <th rowspan="2">Limit</th>
+        </tr>
+        <tr>
+            <th>Id</th>
+            <th>Todo</th>
+            <th>Completed</th>
+            <th>UserId</th>
+        </tr>
+    </table>
+    <script>
+        let table=document.getElementById('table')
+        fetch("https://dummyjson.com/todos")
+        .then(Response=>Response.json())
+        .then(data=>{
+            for(i of data.todos){
+                let tr=document.createElement('tr');
+                for(key in i){
+                    let td=document.createElement('td');
+                    td.innerHTML=i[key]
+                    tr.append(td)
+                }
+              for(i in data){
+                if(i!="todos"){
+                let td=document.createElement('td');
+                    td.innerHTML=data[i];
+                    tr.append(td)
+                }
+              }
+                table.appendChild(tr);
+            }
+        })
+
+    </script>
+</body>
+</html>

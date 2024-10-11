@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        p{
+            font-size: 1.5rem;
+            text-transform: capitalize;
+        }
+        b{
+            font-size: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        url = "https://randomuser.me/api/"
+        fetch(url)
+            .then(Response => Response.json())
+            .then(result => {
+
+                for (let key in result) {
+                    // console.log(result[key])
+                    if (typeof result[key] === 'object') {
+                        let p = document.createElement('p')
+                        p.innerHTML = result[key];
+                        for (let innerKey in result[key]) {
+                            if (typeof result[key][innerKey] === "object") {
+                                for (resultInner in result[key][innerKey]) {
+
+                                    p.innerHTML = `<b>${resultInner}</b>:${result[key][innerKey][resultInner]}`
+                                    document.body.appendChild(p)
+
+                                    if (typeof result[key][innerKey][resultInner] === "object") {
+                                        for (deepResult in result[key][innerKey][resultInner]) {
+                                            if(deepResult=="large"||deepResult=="medium"||deepResult=="thumbnail"){
+                                                let img=document.createElement('img');
+                                                img.src=result[key][innerKey][resultInner][deepResult][innerDeepResult];
+                                                document.body.appendChild(img)
+                                            }else{
+                                            let p = document.createElement('p')
+                                            p.innerHTML =`<b>${deepResult}</b>:${result[key][innerKey][resultInner][deepResult]}`;
+                                            document.body.appendChild(p)
+                                            }
+                                            if (typeof result[key][innerKey][resultInner][deepResult] === "object") {
+                                                for (innerDeepResult in result[key][innerKey][resultInner][deepResult]) {
+                                                    p.innerHTML = `<b>${innerDeepResult}</b> :${result[key][innerKey][resultInner][deepResult][innerDeepResult]}`;
+                                                    document.body.appendChild(p)
+                                                    console.log(innerDeepResult)
+                                                }
+                                                
+
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                                let p = document.createElement('p')
+                                p.innerHTML = `<b>${innerKey}:${result[key][innerKey]}</b>`;
+                                document.body.appendChild(p)
+                            }
+                        }
+                    }
+                }
+
+            })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table,th,tr,td{
+            border: 2px solid;
+            padding: 10px;
+            font-size: 1.2rem;
+        }
+        .images{
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <table id="table">
+        <tr>
+            <th>AblumId</th>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Url</th>
+            <th>ThumbNailUrl</th>
+        </tr>
+    </table>
+    <script>
+        let table=document.getElementById('table');
+        fetch("https://jsonplaceholder.typicode.com/photos")
+        .then(Response=>Response.json())
+        .then(data=>{
+            for(i of data){
+                let tr=document.createElement('tr')
+                for(key in i){
+                   
+                    let td=document.createElement('td');
+                    td.innerHTML=i[key];
+                    if(key=="url"||key=="thumbnailUrl"){
+                        let img=document.createElement('img');
+                        td.innerHTML= " "
+                        img.className="images"
+                        img.src=i[key]
+                        td.appendChild(img);
+                    }
+                    tr.appendChild(td);
+                }
+                table.appendChild(tr)
+            }
+        })
+    </script>
+</body>
+</html>
